@@ -1,10 +1,26 @@
-import { View, Text } from 'react-native';
+import { ReactNode } from 'react';
+import { View, ViewProps } from 'react-native';
+import { SafeAreaView, Edges } from 'react-native-safe-area-context';
 
-const Container = () => {
+type ContainerProps = ViewProps & {
+  children: ReactNode;
+  edges?: Edges;
+  padded?: boolean;
+};
+
+const Container = ({
+  children,
+  edges = ['top', 'bottom'],
+  padded = true,
+  className,
+  ...props
+}: ContainerProps) => {
   return (
-    <View>
-      <Text>Container</Text>
-    </View>
+    <SafeAreaView edges={edges} className="flex-1 bg-white">
+      <View className={`flex-1 ${padded ? 'px-5' : ''} ${className ?? ''}`} {...props}>
+        {children}
+      </View>
+    </SafeAreaView>
   );
 };
 
