@@ -1,17 +1,24 @@
 import { Pressable, PressableProps, Text } from 'react-native';
 
+import { cn } from '@/lib/utils';
+
 type ChipProps = Omit<PressableProps, 'children'> & {
   label: string;
   active?: boolean;
+  className?: string;
 };
 
-const Chip = ({ label, active = false, ...props }: ChipProps) => {
+const Chip = ({ label, active = false, className, ...props }: ChipProps) => {
   return (
     <Pressable
       accessibilityRole="button"
-      className={`rounded-full px-4 py-1 active:opacity-80 ${active ? 'bg-ink' : 'bg-canvas'}`}
+      className={cn(
+        'rounded-full px-4 py-1 active:opacity-80',
+        active ? 'bg-ink' : 'bg-canvas',
+        className
+      )}
       {...props}>
-      <Text className={`font-inter-semibold text-xs ${active ? 'text-white' : 'text-ink'}`}>
+      <Text className={cn('font-inter-semibold text-xs', active ? 'text-white' : 'text-ink')}>
         {label}
       </Text>
     </Pressable>

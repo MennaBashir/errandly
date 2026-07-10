@@ -1,6 +1,8 @@
 import { useRef, useState } from 'react';
 import { Pressable, Text, TextInput, View } from 'react-native';
 
+import { cn } from '@/lib/utils';
+
 type OtpInputProps = {
   length?: number;
   value: string;
@@ -24,7 +26,8 @@ const OtpInput = ({ length = 6, value, onChange, error }: OtpInputProps) => {
           return (
             <View
               key={i}
-              className={`h-14 flex-1 items-center justify-center rounded-sm border ${
+              className={cn(
+                'h-14 flex-1 items-center justify-center rounded-sm border bg-white',
                 error
                   ? 'border-error'
                   : isActive
@@ -32,7 +35,7 @@ const OtpInput = ({ length = 6, value, onChange, error }: OtpInputProps) => {
                     : digits[i]
                       ? 'border-ink'
                       : 'border-mute'
-              } bg-white`}>
+              )}>
               <Text className="font-inter-bold text-2xl text-ink">{digits[i] ?? ''}</Text>
             </View>
           );
