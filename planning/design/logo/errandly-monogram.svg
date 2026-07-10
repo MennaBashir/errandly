@@ -1,0 +1,8 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Errandly monogram">
+  <!-- Ink squircle -->
+  <rect x="8" y="8" width="496" height="496" rx="112" fill="#000000"/>
+  <!-- Letter E (white) -->
+  <text x="256" y="256" text-anchor="middle" dominant-baseline="central" font-family="Inter, system-ui, Arial, sans-serif" font-weight="700" font-size="300" letter-spacing="-6" fill="#FFFFFF">E</text>
+  <!-- Amber corner dot accent -->
+  <circle cx="392" cy="132" r="34" fill="#F2A104"/>
+</svg>

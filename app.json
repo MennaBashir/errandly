@@ -1,17 +1,15 @@
 {
   "expo": {
+    "scheme": "errandly",
     "name": "errandly",
     "slug": "errandly",
     "version": "1.0.0",
-
     "web": {
       "favicon": "./assets/favicon.png"
     },
-
     "experiments": {
-      "tsconfigPaths": true
+      "typedRoutes": true
     },
-
     "plugins": [
       [
         "expo-splash-screen",
@@ -19,15 +17,17 @@
           "image": "./assets/splash.png",
           "backgroundColor": "#ffffff"
         }
-      ]
+      ],
+      "expo-router",
+      "expo-status-bar",
+      "expo-image"
     ],
-
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-
     "userInterfaceStyle": "light",
-
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
