@@ -23,20 +23,23 @@ const OtpInput = ({ length = 6, value, onChange, error }: OtpInputProps) => {
         onPress={() => inputRef.current?.focus()}>
         {Array.from({ length }).map((_, i) => {
           const isActive = focused && i === Math.min(value.length, length - 1);
+          const filled = digits[i] != null;
           return (
             <View
               key={i}
               className={cn(
-                'h-14 flex-1 items-center justify-center rounded-sm border bg-white',
+                'h-16 flex-1 items-center justify-center rounded-sm',
                 error
-                  ? 'border-error'
+                  ? 'border-2 border-error bg-white'
                   : isActive
-                    ? 'border-2 border-ink'
-                    : digits[i]
-                      ? 'border-ink'
-                      : 'border-mute'
+                    ? 'border-2 border-amber bg-white'
+                    : filled
+                      ? 'border-2 border-ink bg-white'
+                      : 'border border-transparent bg-canvas'
               )}>
-              <Text className="font-inter-bold text-2xl text-ink">{digits[i] ?? ''}</Text>
+              <Text className={cn('font-inter-bold text-2xl', filled ? 'text-ink' : 'text-mute')}>
+                {digits[i] ?? '-'}
+              </Text>
             </View>
           );
         })}
