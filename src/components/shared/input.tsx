@@ -1,5 +1,6 @@
+import { Eye, EyeOff } from 'lucide-react-native';
 import { forwardRef, ReactNode, useState } from 'react';
-import { Text, TextInput, TextInputProps, View } from 'react-native';
+import { Pressable, Text, TextInput, TextInputProps, View } from 'react-native';
 
 import { cn } from '@/lib/utils';
 
@@ -7,18 +8,20 @@ export type InputProps = TextInputProps & {
   label?: string;
   error?: string;
   prefix?: ReactNode;
+  secureToggle?: boolean;
 };
 
 const Input = forwardRef<TextInput, InputProps>(
-  ({ label, error, prefix, onFocus, onBlur, className, ...props }, ref) => {
+  ({ label, error, prefix, secureToggle, onFocus, onBlur, className, ...props }, ref) => {
     const [focused, setFocused] = useState(false);
+    const [hidden, setHidden] = useState(true);
 
     return (
       <View className="w-full">
         {label ? (
           <Text
             className={cn(
-              'mb-1 font-inter-semibold text-xs uppercase tracking-wider',
+              'mb-2 font-inter-semibold text-xs uppercase tracking-wider',
               error ? 'text-error' : focused ? 'text-ink' : 'text-body'
             )}>
             {label}
@@ -26,17 +29,13 @@ const Input = forwardRef<TextInput, InputProps>(
         ) : null}
         <View
           className={cn(
-            'w-full flex-row items-center gap-3',
-            error
-              ? 'border-b-2 border-error'
-              : focused
-                ? 'border-b-2 border-ink'
-                : 'border-b border-mute'
+            'h-12 w-full flex-row items-center gap-3 border-b-2',
+            error ? 'border-error' : focused ? 'border-ink' : 'border-mute'
           )}>
-          {prefix ? <View className="py-2">{prefix}</View> : null}
+          {prefix ? <View>{prefix}</View> : null}
           <TextInput
             ref={ref}
-            className={cn('flex-1 py-2 font-inter text-base text-ink', className)}
+            className={cn('h-12 flex-1 font-inter text-base text-ink', className)}
             placeholderTextColor="#AFAFAF"
             onFocus={(e) => {
               setFocused(true);
@@ -47,9 +46,24 @@ const Input = forwardRef<TextInput, InputProps>(
               onBlur?.(e);
             }}
             {...props}
+            secureTextEntry={secureToggle ? hidden : props.secureTextEntry}
           />
+          {secureToggle ? (
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={hidden ? 'Show password' : 'Hide password'}
+              hitSlop={8}
+              className="active:opacity-70"
+              onPress={() => setHidden((v) => !v)}>
+              {hidden ? (
+                <EyeOff size={20} color="#AFAFAF" strokeWidth={1.75} />
+              ) : (
+                <Eye size={20} color="#000000" strokeWidth={1.75} />
+              )}
+            </Pressable>
+          ) : null}
         </View>
-        {error ? <Text className="mt-1 font-inter text-xs text-error">{error}</Text> : null}
+        {error ? <Text className="mt-1.5 font-inter text-sm text-error">{error}</Text> : null}
       </View>
     );
   }

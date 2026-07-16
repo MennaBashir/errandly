@@ -20,11 +20,19 @@ export default function Signup() {
     formState: { isSubmitting },
   } = useForm<SignupInput>({
     resolver: zodResolver(signupSchema),
-    defaultValues: { name: '', email: '', phone: '', acceptTerms: false },
+    defaultValues: {
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
+      phone: '',
+      bio: '',
+      acceptTerms: false,
+    },
   });
 
   const onSubmit = (data: SignupInput) => {
-    router.push({ pathname: '/(auth)/verify-otp', params: { phone: data.phone } });
+    router.push({ pathname: '/(auth)/verify-email', params: { email: data.email } });
   };
 
   return (
@@ -47,14 +55,28 @@ export default function Signup() {
           </View>
 
           <View className="gap-8">
-            <InputController
-              control={control}
-              name="name"
-              label="Full name"
-              placeholder="Jane Doe"
-              autoCapitalize="words"
-              autoComplete="name"
-            />
+            <View className="flex-row gap-4">
+              <View className="flex-1">
+                <InputController
+                  control={control}
+                  name="firstName"
+                  label="First name"
+                  placeholder="Jane"
+                  autoCapitalize="words"
+                  autoComplete="given-name"
+                />
+              </View>
+              <View className="flex-1">
+                <InputController
+                  control={control}
+                  name="lastName"
+                  label="Last name"
+                  placeholder="Doe"
+                  autoCapitalize="words"
+                  autoComplete="family-name"
+                />
+              </View>
+            </View>
             <InputController
               control={control}
               name="email"
@@ -64,13 +86,36 @@ export default function Signup() {
               autoCapitalize="none"
               autoComplete="email"
             />
+            <InputController
+              control={control}
+              name="password"
+              label="Password"
+              placeholder="At least 8 characters"
+              autoCapitalize="none"
+              autoComplete="new-password"
+              secureToggle
+            />
             <Controller
               control={control}
               name="phone"
               render={({ field: { value, onChange }, fieldState: { error } }) => (
-                <PhoneInput value={value} onChange={onChange} error={error?.message} />
+                <View>
+                  <PhoneInput value={value ?? ''} onChange={onChange} error={error?.message} />
+                </View>
               )}
             />
+            <View>
+              <Text className="mb-1 font-inter text-xs text-mute">Optional</Text>
+              <InputController
+                control={control}
+                name="bio"
+                label="Bio"
+                placeholder="Tell us a bit about yourself"
+                autoCapitalize="sentences"
+                multiline
+                maxLength={255}
+              />
+            </View>
 
             <Controller
               control={control}
@@ -95,24 +140,28 @@ export default function Signup() {
                     </Text>
                   </Pressable>
                   {error ? (
-                    <Text className="mt-1 font-inter text-xs text-error">{error.message}</Text>
+                    <Text className="mt-1 font-inter text-sm text-error">{error.message}</Text>
                   ) : null}
                 </View>
               )}
             />
           </View>
-        </ScrollView>
 
-        <View className="gap-4 pb-4 pt-4">
-          <Button title="Send code" loading={isSubmitting} onPress={handleSubmit(onSubmit)} />
-          <SocialAuth />
-          <Text className="mt-2 text-center font-inter text-sm text-body">
-            Already have an account?{' '}
-            <Link href="/(auth)/login" replace className="font-inter-bold text-ink">
-              Log in
-            </Link>
-          </Text>
-        </View>
+          <View className="mt-8 gap-4 pb-4">
+            <Button
+              title="Create account"
+              loading={isSubmitting}
+              onPress={handleSubmit(onSubmit)}
+            />
+            <SocialAuth />
+            <Text className="my-2 text-center font-inter-medium text-body">
+              Already have an account?{' '}
+              <Link href="/(auth)/login" replace className="font-inter-semibold text-ink">
+                Log in
+              </Link>
+            </Text>
+          </View>
+        </ScrollView>
       </KeyboardAvoidingView>
     </Container>
   );

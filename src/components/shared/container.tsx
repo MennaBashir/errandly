@@ -8,17 +8,19 @@ type ContainerProps = ViewProps & {
   children: ReactNode;
   edges?: Edges;
   padded?: boolean;
+  bgColor?: string;
 };
 
 const Container = ({
   children,
   edges = ['top', 'bottom'],
   padded = true,
+  bgColor = 'bg-white',
   className,
   ...props
 }: ContainerProps) => {
   return (
-    <SafeAreaView edges={edges} className="flex-1 bg-white">
+    <SafeAreaView edges={edges} className={`flex-1 ${bgColor}`}>
       <View className={cn('flex-1', padded && 'px-5', className)} {...props}>
         {children}
       </View>

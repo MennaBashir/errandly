@@ -46,7 +46,7 @@ const PhoneInput = ({
   value,
   onChange,
   error,
-  defaultCountry = 'US',
+  defaultCountry = 'EG',
 }: PhoneInputProps) => {
   const [country, setCountry] = useState<CountryCode>(defaultCountry);
   const [pickerOpen, setPickerOpen] = useState(false);
@@ -96,7 +96,7 @@ const PhoneInput = ({
             accessibilityRole="button"
             accessibilityLabel="Select country"
             onPress={() => setPickerOpen(true)}
-            className="flex-row items-center gap-1.5 active:opacity-70">
+            className="flex-row  items-center gap-1.5 active:opacity-70">
             <Text className="text-lg">{flagEmoji(country)}</Text>
             <Text className="font-inter text-base text-ink">+{callingCode}</Text>
             <ChevronDown size={14} color="#5E5E5E" />
@@ -129,7 +129,7 @@ const PhoneInput = ({
               placeholder="Search country or code"
               placeholderTextColor="#AFAFAF"
               autoCapitalize="none"
-              className="h-12 flex-1 font-inter text-base text-ink"
+              className="h-12  flex-1 font-inter text-base text-ink"
             />
           </View>
 
