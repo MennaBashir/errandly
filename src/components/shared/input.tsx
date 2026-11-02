@@ -29,7 +29,7 @@ const Input = forwardRef<TextInput, InputProps>(
         ) : null}
         <View
           className={cn(
-            'h-12 w-full flex-row items-center gap-3 border-b-2',
+            'h-12 w-full flex-row items-center gap-3 border-b-2 bg-white px-3',
             error ? 'border-error' : focused ? 'border-ink' : 'border-mute'
           )}>
           {prefix ? <View>{prefix}</View> : null}

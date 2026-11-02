@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Link, useRouter } from 'expo-router';
+import { Link } from 'expo-router';
 import { useForm } from 'react-hook-form';
 import { KeyboardAvoidingView, Platform, Pressable, Text, View } from 'react-native';
 
@@ -8,22 +8,19 @@ import Button from '@/components/shared/button';
 import Container from '@/components/shared/container';
 import InputController from '@/components/shared/inputController';
 import SocialAuth from '@/components/shared/socialAuth';
+import { useLogin } from '@/hooks/useAuth';
 import { loginSchema, LoginInput } from '@/schema/auth';
 
 export default function Login() {
-  const router = useRouter();
+  const login = useLogin();
 
-  const {
-    control,
-    handleSubmit,
-    formState: { isSubmitting },
-  } = useForm<LoginInput>({
+  const { control, handleSubmit } = useForm<LoginInput>({
     resolver: zodResolver(loginSchema),
     defaultValues: { email: '', password: '' },
   });
 
-  const onSubmit = (_data: LoginInput) => {
-    router.replace('/(tabs)');
+  const onSubmit = (data: LoginInput) => {
+    login.mutate(data);
   };
 
   return (
@@ -66,7 +63,7 @@ export default function Login() {
         <View className="flex-1" />
 
         <View className="gap-4 pb-4">
-          <Button title="Log in" loading={isSubmitting} onPress={handleSubmit(onSubmit)} />
+          <Button title="Log in" loading={login.isPending} onPress={handleSubmit(onSubmit)} />
           <SocialAuth />
           <Text className="my-2 text-center font-inter-medium text-body">
             New to Errandly?{' '}

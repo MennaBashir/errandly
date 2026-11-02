@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Link, useRouter } from 'expo-router';
+import { Link } from 'expo-router';
 import { useForm, Controller } from 'react-hook-form';
 import { KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, View } from 'react-native';
 
@@ -9,16 +9,13 @@ import Container from '@/components/shared/container';
 import InputController from '@/components/shared/inputController';
 import PhoneInput from '@/components/shared/phoneInput';
 import SocialAuth from '@/components/shared/socialAuth';
+import { useSignup } from '@/hooks/useAuth';
 import { cn } from '@/lib/utils';
 import { signupSchema, SignupInput } from '@/schema/auth';
 
 export default function Signup() {
-  const router = useRouter();
-  const {
-    control,
-    handleSubmit,
-    formState: { isSubmitting },
-  } = useForm<SignupInput>({
+  const signup = useSignup();
+  const { control, handleSubmit } = useForm<SignupInput>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
       firstName: '',
@@ -32,11 +29,11 @@ export default function Signup() {
   });
 
   const onSubmit = (data: SignupInput) => {
-    router.push({ pathname: '/(auth)/verify-email', params: { email: data.email } });
+    signup.mutate(data);
   };
 
   return (
-    <Container edges={['top', 'bottom']}>
+    <Container edges={['top', 'bottom']} bgColor="bg-[#F9F9F9]">
       <KeyboardAvoidingView
         className="flex-1"
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
@@ -150,7 +147,7 @@ export default function Signup() {
           <View className="mt-8 gap-4 pb-4">
             <Button
               title="Create account"
-              loading={isSubmitting}
+              loading={signup.isPending}
               onPress={handleSubmit(onSubmit)}
             />
             <SocialAuth />

@@ -9,29 +9,30 @@ import Button from '@/components/shared/button';
 import CheckInbox from '@/components/shared/checkInbox';
 import Container from '@/components/shared/container';
 import InputController from '@/components/shared/inputController';
+import { useForgotPassword } from '@/hooks/useAuth';
 import { forgotPasswordSchema, ForgotPasswordInput } from '@/schema/auth';
 
 export default function ResetPassword() {
   const router = useRouter();
   const [sentEmail, setSentEmail] = useState<string | null>(null);
+  const forgotPassword = useForgotPassword();
 
-  const {
-    control,
-    handleSubmit,
-    reset,
-    formState: { isSubmitting },
-  } = useForm<ForgotPasswordInput>({
+  const { control, handleSubmit, reset } = useForm<ForgotPasswordInput>({
     resolver: zodResolver(forgotPasswordSchema),
     defaultValues: { email: '' },
   });
 
   const onSubmit = (data: ForgotPasswordInput) => {
-    setSentEmail(data.email);
+    // Ask the backend to send the reset email; only show
+    // "Check your inbox" if the request succeeded.
+    forgotPassword.mutate(data.email, {
+      onSuccess: () => setSentEmail(data.email),
+    });
   };
 
   if (sentEmail) {
     return (
-      <Container edges={['top', 'bottom']}>
+      <Container edges={['top', 'bottom']} bgColor="bg-[#F9F9F9]">
         <KeyboardAvoidingView
           className="flex-1"
           behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
@@ -41,9 +42,7 @@ export default function ResetPassword() {
             description="We sent a password reset link to {email}. Open it to set a new password."
             primaryLabel="Back to log in"
             onPrimary={() => router.replace('/(auth)/login')}
-            onResend={() => {
-              // TODO Phase B: POST /auth/forgot-password
-            }}
+            onResend={() => forgotPassword.mutate(sentEmail)}
             secondary={{
               label: 'Wrong email? Try another',
               onPress: () => {
@@ -58,7 +57,7 @@ export default function ResetPassword() {
   }
 
   return (
-    <Container edges={['top', 'bottom']}>
+    <Container edges={['top', 'bottom']} bgColor="bg-[#F9F9F9]">
       <KeyboardAvoidingView
         className="flex-1"
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
@@ -85,7 +84,11 @@ export default function ResetPassword() {
         <View className="flex-1" />
 
         <View className="pb-4">
-          <Button title="Send reset link" loading={isSubmitting} onPress={handleSubmit(onSubmit)} />
+          <Button
+            title="Send reset link"
+            loading={forgotPassword.isPending}
+            onPress={handleSubmit(onSubmit)}
+          />
         </View>
       </KeyboardAvoidingView>
     </Container>

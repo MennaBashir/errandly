@@ -15,6 +15,7 @@ import Button from '@/components/shared/button';
 import Container from '@/components/shared/container';
 import { images } from '@/lib/assets';
 import { cn } from '@/lib/utils';
+import { useAuthStore } from '@/store/authStore';
 
 type Slide = {
   key: string;
@@ -50,18 +51,26 @@ export default function Onboarding() {
   const listRef = useRef<FlatList<Slide>>(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
+  const markOnboardingSeen = useAuthStore((s) => s.markOnboardingSeen);
+
   const isLast = activeIndex === slides.length - 1;
 
   const handleMomentumEnd = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     setActiveIndex(Math.round(e.nativeEvent.contentOffset.x / width));
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (isLast) {
+      await markOnboardingSeen();
       router.replace('/(auth)/signup');
       return;
     }
     listRef.current?.scrollToIndex({ index: activeIndex + 1, animated: true });
+  };
+
+  const handleLogin = async () => {
+    await markOnboardingSeen();
+    router.replace('/(auth)/login');
   };
 
   return (
@@ -99,7 +108,7 @@ export default function Onboarding() {
         <Pressable
           accessibilityRole="button"
           className="py-1 active:opacity-70"
-          onPress={() => router.replace('/(auth)/login')}>
+          onPress={handleLogin}>
           <Text className="font-inter-bold text-base text-ink">I already have an account</Text>
         </Pressable>
         <View className="flex-row gap-2 pt-2">

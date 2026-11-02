@@ -24,9 +24,17 @@
       "expo-secure-store"
     ],
     "orientation": "portrait",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/9eda176a-f3f7-4232-88ad-08e69fe1b3d7"
+    },
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
@@ -34,6 +42,13 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
+      },
+      "package": "com.mennabashir.errandly"
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "9eda176a-f3f7-4232-88ad-08e69fe1b3d7"
       }
     }
   }
