@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Errandly — Logo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{ --ink:#000; --amber:#F2A104; --body:#5e5e5e; --soft:#efefef; }
+  *{box-sizing:border-box}
+  body{font-family:Inter,system-ui,Arial,sans-serif;color:var(--ink);margin:0;padding:48px;background:#fff}
+  h1{font-weight:700;font-size:36px;letter-spacing:-.02em;margin:0 0 4px}
+  .sub{color:var(--body);font-size:16px;margin:0 0 40px}
+  .cap{color:var(--body);font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;margin:0 0 12px}
+  .grid{display:flex;flex-wrap:wrap;gap:24px;margin-bottom:48px}
+  .card{border:1px solid var(--soft);border-radius:16px;padding:24px;display:flex;align-items:center;justify-content:center;background:#fff}
+  .dark{background:var(--ink)}
+  .tile img{width:160px;height:160px;display:block}
+  .row{display:flex;align-items:center;gap:40px;flex-wrap:wrap}
+  .chips{display:flex;gap:16px}
+  .chip{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--body)}
+  .sw{width:28px;height:28px;border-radius:999px;border:1px solid var(--soft)}
+  .sizes{display:flex;align-items:flex-end;gap:20px}
+  .sizes img{display:block}
+</style>
+</head>
+<body>
+  <h1>Errandly — Logo</h1>
+  <p class="sub">Amber-on-ink brand mark. One accent (#F2A104), ink black, white, Inter.</p>
+
+  <p class="cap">App icon</p>
+  <div class="grid">
+    <div class="card tile"><img src="app-icon-light.svg" alt="App icon light"></div>
+    <div class="card tile dark"><img src="app-icon-dark.svg" alt="App icon dark"></div>
+  </div>
+
+  <p class="cap">Icon mark</p>
+  <div class="grid">
+    <div class="card"><img src="errandly-icon.svg" width="120" height="120" alt="Icon"></div>
+    <div class="card dark"><img src="errandly-icon-inverted.svg" width="120" height="120" alt="Icon inverted"></div>
+  </div>
+
+  <p class="cap">Lockups</p>
+  <div class="grid">
+    <div class="card"><img src="errandly-lockup-horizontal.svg" width="360" alt="Horizontal lockup"></div>
+    <div class="card"><img src="errandly-lockup-stacked.svg" width="200" alt="Stacked lockup"></div>
+  </div>
+
+  <p class="cap">Monogram</p>
+  <div class="grid">
+    <div class="card"><img src="errandly-monogram.svg" width="120" height="120" alt="Monogram"></div>
+  </div>
+
+  <p class="cap">Small sizes (legibility)</p>
+  <div class="grid">
+    <div class="card sizes">
+      <img src="icon-180.png" width="64" height="64" alt="64">
+      <img src="icon-180.png" width="48" height="48" alt="48">
+      <img src="icon-48.png" width="32" height="32" alt="32">
+      <img src="icon-48.png" width="16" height="16" alt="16">
+    </div>
+  </div>
+
+  <p class="cap">Palette</p>
+  <div class="chips">
+    <div class="chip"><span class="sw" style="background:#000"></span> Ink #000000</div>
+    <div class="chip"><span class="sw" style="background:#fff"></span> White #FFFFFF</div>
+    <div class="chip"><span class="sw" style="background:#F2A104"></span> Amber #F2A104</div>
+  </div>
+</body>
+</html>

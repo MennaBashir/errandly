@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Errandly — My tasks (Master)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#000; --white:#fff; --amber:#F2A104; --amber-soft:#FDF0D5; --amber-pressed:#D98E00;
+    --body:#5e5e5e; --mute:#afafaf; --soft:#efefef; --softer:#f3f3f3; --pressed:#e2e2e2;
+    --success:#0F8A50;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:Inter,system-ui,Arial,sans-serif;background:#e9e9ee;display:flex;justify-content:center;padding:32px}
+  .device{width:390px;height:844px;background:var(--white);border-radius:44px;overflow:hidden;position:relative;box-shadow:0 24px 80px rgba(0,0,0,.14);display:flex;flex-direction:column}
+
+  /* header */
+  .header{padding:20px 20px 8px;display:flex;flex-direction:column;gap:16px}
+  .titlerow{display:flex;align-items:center;justify-content:space-between}
+  .h1{font-weight:700;font-size:24px;letter-spacing:-.01em}
+  .avatar{width:36px;height:36px;border-radius:999px;background:var(--soft);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:var(--body)}
+
+  /* segmented toggle */
+  .seg{display:flex;background:var(--soft);border-radius:36px;padding:4px}
+  .seg button{flex:1;border:0;background:transparent;font-family:inherit;font-weight:500;font-size:14px;color:var(--body);padding:9px 0;border-radius:36px;cursor:pointer}
+  .seg button.on{background:var(--white);color:var(--ink);box-shadow:0 1px 4px rgba(0,0,0,.08)}
+
+  /* filter pills */
+  .filters{display:flex;gap:8px;overflow-x:auto;padding:4px 20px 12px;scrollbar-width:none}
+  .filters::-webkit-scrollbar{display:none}
+  .pill{white-space:nowrap;border:0;font-family:inherit;font-weight:500;font-size:13px;padding:8px 16px;border-radius:999px;background:var(--soft);color:var(--ink);cursor:pointer}
+  .pill.on{background:var(--ink);color:var(--white)}
+
+  /* list */
+  .list{flex:1;overflow-y:auto;padding:4px 16px 120px;display:flex;flex-direction:column;gap:12px}
+  .card{background:var(--white);border:1px solid var(--soft);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:10px}
+  .toprow{display:flex;align-items:center;gap:8px}
+  .chip{font-weight:500;font-size:12px;padding:4px 12px;border-radius:999px;background:var(--soft);color:var(--body)}
+  .status{font-weight:500;font-size:12px;padding:4px 12px;border-radius:999px;display:inline-flex;align-items:center;gap:6px;margin-left:auto}
+  .s-open{background:var(--amber-soft);color:var(--amber-pressed)}
+  .s-live{background:var(--amber);color:#000}
+  .s-live .dot{width:7px;height:7px;border-radius:999px;background:#000;animation:pulse 1.2s infinite}
+  .s-pending{background:var(--soft);color:var(--body)}
+  .s-done{background:var(--soft);color:var(--success)}
+  .ttl{font-weight:700;font-size:20px;letter-spacing:-.01em;line-height:1.2}
+  .meta{font-size:14px;color:var(--body)}
+  .botrow{display:flex;align-items:center;gap:10px;margin-top:2px}
+  .payout{font-weight:700;font-size:20px;color:var(--ink)}
+  .spacer{flex:1}
+  .who{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--body)}
+  .av{width:26px;height:26px;border-radius:999px;background:var(--pressed)}
+  .stack{display:flex}
+  .stack .av{margin-left:-8px;border:2px solid #fff}
+  .stack .av:first-child{margin-left:0}
+
+  /* FAB */
+  .fab{position:absolute;left:50%;transform:translateX(-50%);bottom:78px;width:60px;height:60px;border-radius:999px;background:var(--amber);display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px rgba(242,161,4,.4);border:4px solid #fff;z-index:3}
+  .fab svg{width:26px;height:26px}
+
+  /* tab bar */
+  .tabs{position:absolute;left:0;right:0;bottom:0;height:72px;background:var(--white);border-top:1px solid var(--soft);display:flex;align-items:flex-start;padding-top:10px}
+  .tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;color:var(--mute)}
+  .tab svg{width:22px;height:22px;stroke:var(--mute)}
+  .tab.on{color:var(--ink)}
+  .tab.on svg{stroke:var(--ink)}
+  .tabdot{width:5px;height:5px;border-radius:999px;background:var(--amber);margin-top:2px}
+  .tab .ph{width:5px;height:5px;margin-top:2px}
+  .tab.center{visibility:hidden}
+
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+</style>
+</head>
+<body>
+  <div class="device">
+    <!-- Header -->
+    <div class="header">
+      <div class="titlerow">
+        <div class="h1">My tasks</div>
+        <div class="avatar">SA</div>
+      </div>
+      <div class="seg">
+        <button class="on">Master</button>
+        <button>Runner</button>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters">
+      <button class="pill on">Open</button>
+      <button class="pill">Assigned</button>
+      <button class="pill">Pending approval</button>
+      <button class="pill">Completed</button>
+      <button class="pill">Disputed</button>
+    </div>
+
+    <!-- List -->
+    <div class="list">
+      <!-- Open -->
+      <div class="card">
+        <div class="toprow">
+          <span class="chip">Paperwork</span>
+          <span class="status s-open">Open</span>
+        </div>
+        <div class="ttl">Stand in line at City Hall</div>
+        <div class="meta">Posted 2h ago · 3 bids</div>
+        <div class="botrow">
+          <span class="payout">$20</span>
+          <span class="spacer"></span>
+          <span class="stack"><span class="av"></span><span class="av"></span><span class="av"></span></span>
+        </div>
+      </div>
+
+      <!-- In progress -->
+      <div class="card">
+        <div class="toprow">
+          <span class="chip">Delivery</span>
+          <span class="status s-live"><span class="dot"></span>In progress</span>
+        </div>
+        <div class="ttl">Pick up dry cleaning</div>
+        <div class="meta">Runner assigned · 8 min away</div>
+        <div class="botrow">
+          <span class="payout">$18</span>
+          <span class="spacer"></span>
+          <span class="who"><span class="av"></span>David M.</span>
+        </div>
+      </div>
+
+      <!-- Pending approval -->
+      <div class="card">
+        <div class="toprow">
+          <span class="chip">Delivery</span>
+          <span class="status s-pending">Pending approval</span>
+        </div>
+        <div class="ttl">Deliver a package across town</div>
+        <div class="meta">Awaiting your review · proof uploaded</div>
+        <div class="botrow">
+          <span class="payout">$15</span>
+        </div>
+      </div>
+
+      <!-- Completed -->
+      <div class="card">
+        <div class="toprow">
+          <span class="chip">Shopping</span>
+          <span class="status s-done">Completed</span>
+        </div>
+        <div class="ttl">Buy groceries</div>
+        <div class="meta">Completed yesterday · paid</div>
+        <div class="botrow">
+          <span class="payout">$24</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- FAB -->
+    <div class="fab" title="Post a task">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#000" stroke-width="2.4" stroke-linecap="round"/></svg>
+    </div>
+
+    <!-- Tab bar -->
+    <div class="tabs">
+      <div class="tab">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M3 10l9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z" stroke-width="1.8"/></svg>
+        Home<span class="ph"></span>
+      </div>
+      <div class="tab on">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h10" stroke-width="1.8" stroke-linecap="round"/></svg>
+        My tasks<span class="tabdot"></span>
+      </div>
+      <div class="tab center">Post</div>
+      <div class="tab">
+        <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="13" rx="2" stroke-width="1.8"/><path d="M16 11h3" stroke-width="1.8" stroke-linecap="round"/></svg>
+        Wallet<span class="ph"></span>
+      </div>
+      <div class="tab">
+        <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke-width="1.8"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6" stroke-width="1.8" stroke-linecap="round"/></svg>
+        Profile<span class="ph"></span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
